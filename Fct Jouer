@@ -1,0 +1,5 @@
+def jouer(event):
+    global trouve
+    [i,j]=correspond(event.x,event.y)
+    if i in range(nb) and j in range (nb):   # on ne fait rien si le click est hors grille
+        Can.create_rectangle(x0 +c*j,y0+c*i,x0 +c*(j+1),y0+c*(i+1),fill=coul(i,j))
