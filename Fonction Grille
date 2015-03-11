@@ -1,0 +1,5 @@
+def grille():
+    for i in range(nbcase+1):
+        Can.create_line(x0+case*i, y0,x0+case*i,y0 + nbcase*case)
+        Can.create_line(x0, y0+case*i,x0+nbcase*case ,y0+case*i)
+
