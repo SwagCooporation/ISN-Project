@@ -1,0 +1,34 @@
+
+from tkinter import *
+from PIL import *
+
+def Ouvrir() :
+    a
+def regle() :
+    a
+def save() :
+    a
+def taille():
+
+#Creation de la fenetre
+Mafenetre = Tk()
+Mafenetre.title("Sokoban")
+Mafenetre.geometry('720x420')
+
+#Creation menu
+menubar = Menu(Mafenetre)
+menufichier = Menu(menubar,tearoff=0)
+menufichier.add_command(label="Nouvelle partie",command=Ouvrir)
+menufichier.add_command(label="Enregistrer la partie", command=save)
+menufichier.add_command(label="Taille du terrain",command=taille)
+
+menufichier.add_command(label="Quitter",command=Mafenetre.destroy)
+menubar.add_cascade(label="Fichier", menu=menufichier)
+
+menupar = Menu(menubar,tearoff=0)
+menupar.add_command(label="Règle du jeu",command= regle)
+menupar.add_cascade(label="Aide", menu=menuaide)
+
+Mafenetre.config(menu=menubar)
+
+Mafenetre.mainloop()
