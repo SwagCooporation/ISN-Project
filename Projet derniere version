@@ -1,0 +1,53 @@
+import random, sys, copy, os, pygame
+from pygame.locals import *
+
+
+#Initialisation de Pygame
+pygame.init()
+
+#Création de la fenetre
+fenetre = pygame.display.set_mode((640, 480))
+pygame.display.set_caption("Sokoban")
+
+#Collage image de fond
+fond = pygame.image.load("Coucher de Soleil.jpg").convert()
+fenetre.blit(fond, (0,0))
+
+#Collage de personnage
+perso = pygame.image.load("index.jpg").convert_alpha()
+position_perso = perso.get_rect()
+fenetre.blit(perso, (200,300))
+
+#BOUCLE PRINCIPALE
+continuer = 1
+while continuer:
+    #Chargement et affichage de l'écran d'accueil
+    accueil = pygame.image.load("Coucher de Soleil.jpg").convert()
+    fenetre.blit(accueil, (0,0))
+    #Rafraichissement
+    pygame.display.flip()
+    #On remet ces variables à 1 à chaque tour de boucle
+    continuer_jeu = 1
+    continuer_accueil = 1
+    #BOUCLE D'ACCUEIL
+    while continuer_accueil:
+
+        #Limitation de vitesse de la boucle
+        pygame.time.Clock().tick(30)
+
+        for event in pygame.event.get():
+
+            #Si l'utilisateur quitte, on met les variables
+            #de boucle à 0 pour n'en parcourir aucune et fermer
+            if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                continuer_accueil = 0
+                continuer_jeu = 0
+                continuer = 0
+                
+#Boucle infinie
+continuer = 1
+while continuer:
+       for event in pygame.event.get(): #On parcours la liste de tous les événements reçus
+        if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE: #Si un de ces événements est de type QUIT
+            continuer = 0
+            pygame.display.quit()
