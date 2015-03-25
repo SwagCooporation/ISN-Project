@@ -1,0 +1,31 @@
+import random, sys, copy, os, pygame
+from pygame.locals import *
+
+
+
+#Initialisation de Pygame
+pygame.init()
+
+#Création de la fenetre
+fenetre = pygame.display.set_mode((640, 480))
+
+#Collage image de fond
+fond = pygame.image.load("fond.jpg").convert()
+fenetre.blit(fond, (0,0))
+
+#Collage de personnage
+perso = pygame.image.load("mario.png").convert_alpha()
+position_perso = perso.get_rect()
+fenetre.blit(perso, (200,300))
+
+#Rafraîchissement de l'écran
+pygame.display.flip()
+
+#Boucle infinie
+continuer = 1
+while continuer:
+         for event in pygame.event.get():   #On parcours la liste de tous les événements reçus
+            if event.type == QUIT:     #Si un de ces événements est de type QUIT
+                continuer = 0
+                
+
