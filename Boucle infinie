@@ -1,0 +1,16 @@
+#BOUCLE INFINIE
+continuer = 1
+while continuer:
+    for event in pygame.event.get():    #Attente des événements
+        if event.type == QUIT:
+            continuer = 0
+        if event.type == KEYDOWN:
+            if event.key == K_DOWN: #Si "flèche bas"
+                #On descend le perso
+                position_perso = position_perso.move(0,3)
+    
+    #Re-collage
+    fenetre.blit(fond, (0,0))   
+    fenetre.blit(perso, position_perso)
+    #Rafraichissement
+    pygame.display.flip() 
