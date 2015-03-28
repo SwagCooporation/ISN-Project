@@ -1,0 +1,115 @@
+# Créé par guil.nedelec, le 11/03/2015 en Python 3.2
+
+"""
+Sokoban
+Jeu dans lequel on doit deplacerlepersonnage afin qu'il pousse les caisses sur les emplacements indiqués.
+
+Scipt Python
+Fichiers :
+
+Par Guillaume NEDELEC, Samuel BORDES et Olivier GBOGBOHOUNDADA
+"""
+
+import random, sys, copy, os, pygame
+from pygame.locals import *
+
+#Initialisation de Pygame
+pygame.init()
+
+#Création de la fenetre
+fenetre = pygame.display.set_mode((640, 480))
+#Icone
+icone = pygame.image.load('icone.png')
+pygame.display.set_icon(icone)
+#Titre
+pygame.display.set_caption('Sokoban')
+
+#BOUCLE PRINCIPALE
+continuer = 1
+while continuer:
+    #Chargement et affichage de l'écran d'accueil
+    accueil = pygame.image.load('accueil.jpg').convert()
+    fenetre.blit(accueil, (0,0))
+
+    #Rafraichissement pour permettre le bon affichage
+    pygame.display.flip()
+
+    #On remet ces variables à 1 à chaque tour de boucle pour quelle soit infinie
+    continuer_jeu = 1
+    continuer_accueil = 1
+
+    #BOUCLE D'ACCUEIL
+
+    while continuer_accueil :
+
+        #Limitation de vitesse de la boucle (Pour pas surcharger le processeur)
+        pygame.time.Clock().tick(30)
+
+        for event in pygame.event.get():
+
+            if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE or event.type == KEYDOWN and event.key ==K_LALT+K_F4 :
+                continuer_accueil = 0 #Fin de toutes les boucles quand l'evenement de fermeture est détecté
+                continuer_jeu = 0
+                continuer = 0
+                choix = 0 #Variable de choix des niveau
+                pygame.display.quit() #Fermeture de la fenetre
+
+            elif event.type == KEYDOWN :
+                if event.key == K_RETURN :
+                    continuer_accueil=0 #Fermetutre de l'accueil
+                    choix = 'niveau1'  #Lancement du premier niveau
+                elif event.key == K_r :
+                    continuer_accueil=0
+                    choix = 'tuto' #Lancement d'un tutoriel pour apprendre à jouer
+
+    if choix !=0: #Chargement d"un niveau SI un niveau a été choisi
+        fond = pygame.image.load("fond.jpg").convert #On charge le fond du niveau
+        niveau = Niveau(choix) #Selection du niveau choisi
+        niveau.generer() #Generation du niveau
+        niveau.afficher(fenetre) #Affichage dans la fenetre
+
+        #Creation du peronnage
+        mr = Perso('selection des images devant et profil', niveau)
+
+
+    #BOUCLE DE JEU
+    while continuer_jeu:
+
+        #Limitation de vitesse de la boucle (Pour pas surcharger le processeur)
+        pygame.time.Clock().tick(30)
+
+        for event in pygame.event.get():
+
+            #Si l'utilisateur quitte, on met la variable qui continue le jeu et la variable générale à 0 pour fermer la fenêtre
+            if event.type == QUIT:
+                continuer_jeu = 0
+                continuer = 0
+                pygame.display.quit()
+
+            elif event.type == KEYDOWN:
+                #Si l'utilisateur presse Echap ici, on revient seulement au menu
+                if event.key == K_ESCAPE:
+                    continuer_jeu = 0
+
+                #Touches de déplacement du personnage
+                elif event.key == K_RIGHT:
+                    mr.deplacer('droite')
+                elif event.key == K_LEFT:
+                    mr.deplacer('gauche')
+                elif event.key == K_UP:
+                    mr.deplacer('haut')
+                elif event.key == K_DOWN:
+                    mr.deplacer('bas')
+
+        #Affichages aux nouvelles positions
+        fenetre.blit(fond, (0,0)) #collage de limage au bond plan
+        niveau.afficher(fenetre) #fficher l'image dans la fenetre
+        fenetre.blit(mr.direction, (mr.x, mr.y)) #mr.direction = l'image dans la bonne direction
+        pygame.display.flip()
+        #Victoire -> Retour à l'accueil
+        if niveau.structure[mr.case_y][mr.case_x] == 'a':
+            continuer_jeu = 0
+            choix = 'niveau2'
+            niveau = Niveau(choix) #Selection du niveau choisi
+            niveau.generer() #Generation du niveau
+            niveau.afficher(fenetre) #Affichage dans la fenetre
